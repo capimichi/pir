@@ -4,6 +4,7 @@ import click
 
 from pythonz.container.DefaultContainer import DefaultContainer
 from pythonz.helper.ClassHelper import ClassHelper
+from pythonz.manager.PythonzManager import PythonzManager
 
 
 @click.command(
@@ -11,16 +12,8 @@ from pythonz.helper.ClassHelper import ClassHelper
 )
 def manager_create_command():
     default_container: DefaultContainer = DefaultContainer.getInstance()
+    pythonz_manager: PythonzManager = default_container.get(PythonzManager)
 
     manager_name = click.prompt('Enter the name of the manager es. PostManager')
-    manager_name = manager_name.replace('Manager', '').replace('manager', '').strip()
-    manager_name = manager_name + 'Manager'
-
-    package_name = default_container.get_config('name')
-    start_dir = os.getcwd()
-
-    path = f"{start_dir}/{package_name}/manager/{manager_name}.py"
-    ClassHelper.create_class_dir(path)
-    ClassHelper.create_class(path, manager_name)
-
+    pythonz_manager.generate_class(manager_name, 'manager')
     click.echo('Created manager successfully')
