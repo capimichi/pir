@@ -73,4 +73,6 @@ class DefaultContainer:
         v.add_config_path(self.root_dir)
         v.set_config_name("pythonz")
         v.set_config_type("json")
+        if(os.path.exists(self.config_file_path)):
+            v.read_in_config()
 
