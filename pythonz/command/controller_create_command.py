@@ -3,6 +3,7 @@ import os
 import click
 
 from pythonz.container.DefaultContainer import DefaultContainer
+from pythonz.helper.ClassHelper import ClassHelper
 
 
 @click.command(
@@ -18,17 +19,8 @@ def controller_create_command():
     package_name = default_container.get_config('name')
     start_dir = os.getcwd()
 
-    dir = f"{start_dir}/{package_name}/controller"
-    os.makedirs(dir, exist_ok=True)
-
-    init_path = f"{dir}/__init__.py"
-    if(not os.path.exists(init_path)):
-        with open(init_path, 'w') as f:
-            pass
-
-    path = f"{dir}/{controller_name}.py"
-    with open(path, 'w') as f:
-        f.write(f"class {controller_name}:\n")
-        f.write(f"\tpass\n")
+    path = f"{start_dir}/{package_name}/controller/{controller_name}.py"
+    ClassHelper.create_class_dir(path)
+    ClassHelper.create_class(path, controller_name)
 
     click.echo('Created controller successfully')
