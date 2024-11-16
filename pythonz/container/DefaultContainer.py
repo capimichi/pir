@@ -4,8 +4,8 @@ import os
 
 from injector import Injector
 from dotenv import load_dotenv
+from jinja2 import Environment, FileSystemLoader
 from vyper import v
-
 
 
 class DefaultContainer:
@@ -46,7 +46,11 @@ class DefaultContainer:
 
     def _init_directories(self):
         self.root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
         self.config_file_path = os.path.join(self.root_dir, 'pythonz.json')
+
+        self.templates_dir = os.path.join(self.root_dir, 'templates')
+        os.makedirs(self.templates_dir, exist_ok=True)
 
         # self.var_dir = os.path.join(self.root_dir, 'var')
         # os.makedirs(self.var_dir, exist_ok=True)
@@ -67,12 +71,12 @@ class DefaultContainer:
 
     def _init_bindings(self):
         # self.injector.binder.bind(PostDirVariable, PostDirVariable(self.post_dir))
-        pass
+        env = Environment(loader=FileSystemLoader(self.templates_dir))
+        self.injector.binder.bind(Environment, env)
 
     def _init_vyper(self):
         v.add_config_path(self.root_dir)
         v.set_config_name("pythonz")
         v.set_config_type("json")
-        if(os.path.exists(self.config_file_path)):
+        if (os.path.exists(self.config_file_path)):
             v.read_in_config()
-
