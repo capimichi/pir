@@ -21,6 +21,11 @@ def model_create_command():
     dir = f"{start_dir}/{package_name}/model"
     os.makedirs(dir, exist_ok=True)
 
+    init_path = f"{start_dir}/{package_name}/__init__.py"
+    if (not os.path.exists(init_path)):
+        with open(init_path, 'w') as f:
+            pass
+
     path = f"{dir}/{model_name}.py"
     with open(path, 'w') as f:
         f.write(f"class {model_name}:\n")
