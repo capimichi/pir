@@ -7,11 +7,7 @@ from pythonz.container.DefaultContainer import DefaultContainer
     name='init'
 )
 def init_command():
-
     default_container: DefaultContainer = DefaultContainer.getInstance()
-    # ask for the name of the package
     package_name = click.prompt('Enter the name of the package')
-
     default_container.set_config('name', package_name)
-
     click.echo('Successfully initialized the package')
