@@ -21,7 +21,7 @@ def manager_create_command():
     dir = f"{start_dir}/{package_name}/manager"
     os.makedirs(dir, exist_ok=True)
 
-    init_path = f"{start_dir}/{package_name}/__init__.py"
+    init_path = f"{dir}/__init__.py"
     if (not os.path.exists(init_path)):
         with open(init_path, 'w') as f:
             pass
