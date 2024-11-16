@@ -4,6 +4,7 @@ import click
 
 from pythonz.container.DefaultContainer import DefaultContainer
 from pythonz.helper.ClassHelper import ClassHelper
+from pythonz.manager.PythonzManager import PythonzManager
 
 
 @click.command(
@@ -11,16 +12,8 @@ from pythonz.helper.ClassHelper import ClassHelper
 )
 def helper_create_command():
     default_container: DefaultContainer = DefaultContainer.getInstance()
+    pythonz_manager: PythonzManager = default_container.get(PythonzManager)
 
     helper_name = click.prompt('Enter the name of the helper es. PostHelper')
-    helper_name = helper_name.replace('Helper', '').replace('helper', '').strip()
-    helper_name = helper_name + 'Helper'
-
-    package_name = default_container.get_config('name')
-    start_dir = os.getcwd()
-
-    path = f"{start_dir}/{package_name}/helper/{helper_name}.py"
-    ClassHelper.create_class_dir(path)
-    ClassHelper.create_class(path, helper_name)
-
+    pythonz_manager.generate_class(helper_name, 'helper')
     click.echo('Created helper successfully')
