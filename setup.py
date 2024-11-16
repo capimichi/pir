@@ -1,12 +1,13 @@
 from setuptools import setup, find_packages
 
+with open('requirements.txt') as f:
+    requirements = f.read().splitlines()
+
 setup(
     name="pythonz",
     version="1.0.0",
     packages=find_packages(),
-    install_requires=[
-        "click",
-    ],
+    install_requires=requirements,
     entry_points={
         "console_scripts": [
             "pythonz=pythonz.cli:cli",
