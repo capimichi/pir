@@ -21,6 +21,11 @@ def variable_create_command():
     dir = f"{start_dir}/{package_name}/variable"
     os.makedirs(dir, exist_ok=True)
 
+    init_path = f"{start_dir}/{package_name}/__init__.py"
+    if (not os.path.exists(init_path)):
+        with open(init_path, 'w') as f:
+            pass
+
     path = f"{dir}/{variable_name}.py"
     with open(path, 'w') as f:
         f.write(f"class {variable_name}(str):\n")
