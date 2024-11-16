@@ -9,7 +9,7 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "pythonz=cli:cli",
+            "pythonz=pythonz.cli:cli",
         ],
     },
     url="https://github.com/capimichi/pythonz",
