@@ -1,13 +1,17 @@
 import os
 
+import inflection
 from injector import inject
 from jinja2 import Environment
+from redbaron import RedBaron
 
 from pythonz.container.DefaultContainer import DefaultContainer
 
 
 class PythonzManager:
     environment: Environment
+
+    handled_types = ['controller', 'service', 'repository', 'entity', 'helper', 'manager', 'factory', 'model', 'client', 'config', 'exception', 'view', 'variable']
 
     @inject
     def __init__(self, environment: Environment):
@@ -17,9 +21,7 @@ class PythonzManager:
 
         default_container: DefaultContainer = DefaultContainer.getInstance()
 
-        handled_types = ['controller', 'service', 'repository', 'entity', 'helper', 'manager', 'factory', 'model', 'client', 'config', 'exception', 'view', 'variable']
-
-        for handled_type in handled_types:
+        for handled_type in self.handled_types:
             uc_handled_type = handled_type.capitalize()
             if class_type == handled_type:
                 class_name = class_name.replace(uc_handled_type, '').replace(handled_type, '').strip()
@@ -72,3 +74,39 @@ class PythonzManager:
 
         with open(path, 'w') as f:
             f.write(content)
+
+    def add_dependency(self, source_class_name, target_class_name):
+        default_container: DefaultContainer = DefaultContainer.getInstance()
+        package_name = default_container.get_config('name')
+        start_dir = os.getcwd()
+
+        source_type = ""
+        for handled_type in self.handled_types:
+            if(handled_type in source_class_name.lower()):
+                source_type = handled_type
+                break
+
+        target_type = ""
+        for handled_type in self.handled_types:
+            if(handled_type in target_class_name.lower()):
+                target_type = handled_type
+                break
+
+        source_path = f"{start_dir}/{package_name}/{source_type}/{source_class_name}.py"
+        with open(source_path, 'r') as f:
+            content = f.read()
+            import_str = f"from {package_name}.{target_type}.{target_class_name} import {target_class_name}"
+            if import_str not in content:
+                content = import_str + "\n" + content
+
+            property_name = inflection.underscore(target_class_name)
+
+            red = RedBaron(content)
+            constructor = red.find("DefNode", name="__init__")
+            constructor.arguments.append(property_name + ": " + target_class_name + "\n")
+            constructor.value.append("self." + property_name + " = " + property_name)
+            constructor.insert_before(property_name + ": " + target_class_name + "\n\n")
+
+            with open(source_path, 'w') as f:
+                f.write(red.dumps())
+
