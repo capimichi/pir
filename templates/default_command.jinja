@@ -1,0 +1,9 @@
+import click
+
+@click.command(
+    name='{{ command_alias }}'
+)
+def {{ command_name }}():
+    default_container: DefaultContainer = DefaultContainer.getInstance()
+
+    click.echo('Success!')
