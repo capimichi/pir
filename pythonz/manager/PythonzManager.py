@@ -47,7 +47,7 @@ class PythonzManager:
             with open(init_path, 'w') as f:
                 f.write('')
 
-        template = self.environment.get_template(f"default_class.jinja")
+        template = self.environment.get_template(f"default_class.jinja.py")
         content = template.render(class_name=class_name, parent_type=parent_type)
 
         with open(path, 'w') as f:
@@ -69,7 +69,7 @@ class PythonzManager:
             with open(init_path, 'w') as f:
                 f.write('')
 
-        template = self.environment.get_template(f"default_command.jinja")
+        template = self.environment.get_template(f"default_command.jinja.py")
         content = template.render(command_name=command_name, command_alias=command_alias)
 
         with open(path, 'w') as f:
