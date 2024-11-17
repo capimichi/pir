@@ -157,6 +157,9 @@ class PythonzManager:
                 if node.type == "pass":
                     constructor.value.remove(node)
 
+            if(property_name.endswith('_variable')):
+                property_name = property_name.replace('_variable', '')
+
             constructor.arguments.append(property_name + ": " + target_class_name + "\n")
             constructor.value.append("self." + property_name + " = " + property_name)
             constructor.insert_before(property_name + ": " + target_class_name + "\n\n")
