@@ -7,19 +7,19 @@ class {{ class_name }}{% if parent_type %}( {{ parent_type }} ){% endif %}:
     def __init__(self):
         pass
 
-    {% if entity_name %}
-        def get_{{ snake_case_entity_name }}s(self):
-            pass
+{% if entity_name %}
+    def get_{{ snake_case_entity_name }}s(self):
+        pass
 
-        def store_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
-            pass
+    def store_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
+        pass
 
-        def get_{{ snake_case_entity_name }}(self, id: int):
-            pass
+    def get_{{ snake_case_entity_name }}(self, id: int):
+        pass
 
-        def update_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
-            pass
+    def update_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
+        pass
 
-        def delete_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
-            pass
-    {% endif %}
+    def delete_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}: {{ entity_name }}):
+        pass
+{% endif %}
