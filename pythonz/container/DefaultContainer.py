@@ -47,7 +47,7 @@ class DefaultContainer:
     def _init_directories(self):
         self.root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-        self.config_file_path = os.path.join(self.root_dir, 'pythonz.json')
+        self.config_file_path = os.path.join(os.getcwd(), 'pythonz.json')
 
         self.templates_dir = os.path.join(self.root_dir, 'templates')
         os.makedirs(self.templates_dir, exist_ok=True)
