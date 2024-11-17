@@ -17,23 +17,16 @@ class PythonzManager:
     def __init__(self, environment: Environment):
         self.environment = environment
 
-    def generate_class(self, class_name: str, class_type: str):
+    def generate_class(self, class_name: str, class_type: str, entity_name: str = ""):
 
         default_container: DefaultContainer = DefaultContainer.getInstance()
-
-        entity_name = ""
 
         for handled_type in self.handled_types:
             uc_handled_type = handled_type.capitalize()
             if class_type == handled_type:
                 class_name = class_name.replace(uc_handled_type, '').replace(handled_type, '').strip()
-
-                entity_name = class_name
-
                 class_name = class_name + uc_handled_type
                 break
-
-        snake_case_entity_name = inflection.underscore(entity_name)
 
         template_name = "default_class.jinja"
         if(class_type == 'variable'):
@@ -52,6 +45,13 @@ class PythonzManager:
         if not os.path.exists(init_path):
             with open(init_path, 'w') as f:
                 f.write('')
+
+        snake_case_entity_name = ""
+        if(len(entity_name) == 0):
+            entity_name = None
+
+        if(entity_name):
+            snake_case_entity_name = inflection.underscore(entity_name)
 
         template = self.environment.get_template(template_name)
         content = template.render(
