@@ -49,7 +49,7 @@ class DefaultContainer:
         print(self.root_dir)
         self.config_file_path = os.path.join(os.getcwd(), 'pythonz.json')
 
-        self.templates_dir = os.path.join(self.root_dir, 'templates')
+        self.templates_dir = os.path.join(self.root_dir, "pythonz", 'templates')
         os.makedirs(self.templates_dir, exist_ok=True)
 
         # self.var_dir = os.path.join(self.root_dir, 'var')
