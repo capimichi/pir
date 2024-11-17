@@ -131,13 +131,13 @@ class PythonzManager:
 
         source_type = ""
         for handled_type in self.handled_types:
-            if (handled_type in source_class_name.lower()):
+            if(source_class_name.lower().endswith(handled_type)):
                 source_type = handled_type
                 break
 
         target_type = ""
         for handled_type in self.handled_types:
-            if (handled_type in target_class_name.lower()):
+            if(target_class_name.lower().endswith(handled_type)):
                 target_type = handled_type
                 break
 
