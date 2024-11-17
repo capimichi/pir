@@ -11,13 +11,14 @@ from pythonz.container.DefaultContainer import DefaultContainer
 class PythonzManager:
     environment: Environment
 
-    handled_types = ['controller', 'service', 'repository', 'entity', 'helper', 'manager', 'factory', 'model', 'client', 'config', 'exception', 'view', 'variable']
+    handled_types = ['controller', 'service', 'repository', 'entity', 'helper', 'manager', 'factory', 'model', 'client',
+                     'config', 'exception', 'view', 'variable']
 
     @inject
     def __init__(self, environment: Environment):
         self.environment = environment
 
-    def generate_class(self, class_name: str, class_type: str, entity_name: str = ""):
+    def generate_class(self, class_name: str, class_type: str, entity_name: str = "", env_name: str = ""):
 
         default_container: DefaultContainer = DefaultContainer.getInstance()
 
@@ -29,7 +30,7 @@ class PythonzManager:
                 break
 
         template_name = "default_class.jinja"
-        if(class_type == 'variable'):
+        if (class_type == 'variable'):
             template_name = "variable_class.jinja"
 
         package_name = default_container.get_config('name')
@@ -47,10 +48,10 @@ class PythonzManager:
                 f.write('')
 
         snake_case_entity_name = ""
-        if(len(entity_name) == 0):
+        if (len(entity_name) == 0):
             entity_name = None
 
-        if(entity_name):
+        if (entity_name):
             snake_case_entity_name = inflection.underscore(entity_name)
 
         template = self.environment.get_template(template_name)
@@ -63,6 +64,43 @@ class PythonzManager:
 
         with open(path, 'w') as f:
             f.write(content)
+
+        if (len(env_name) > 0):
+            default_container_path = f"{start_dir}/{package_name}/container/DefaultContainer.py"
+            with open(default_container_path, 'r') as f:
+                default_container_content = f.read()
+
+            import_str = f"from {package_name}.variable.{class_name} import {class_name}"
+            if import_str not in default_container_content:
+                default_container_content = import_str + "\n" + default_container_content
+
+            red = RedBaron(default_container_content)
+
+            # search method _init_environment_variables
+            init_environment_variables = red.find("DefNode", name="_init_environment_variables")
+
+            for node in init_environment_variables.value:
+                if node.type == "pass":
+                    init_environment_variables.value.remove(node)
+
+            env_name = inflection.underscore(env_name).upper()
+            env_name = env_name.replace(' ', '_')
+            env_name = env_name.replace('-', '_')
+            env_name = env_name.replace('.', '_')
+            env_name = env_name.replace(':', '_')
+            env_name_lower = env_name.lower()
+            init_environment_variables.value.append(f"self.{env_name_lower} = os.getenv('{env_name}')\n")
+
+            init_bindings = red.find("DefNode", name="_init_bindings")
+
+            for node in init_bindings.value:
+                if node.type == "pass":
+                    init_bindings.value.remove(node)
+
+            init_bindings.value.append(f"self.injector.binder.bind({class_name}, {class_name}(self.{env_name_lower}))\n")
+
+            with open(default_container_path, 'w') as f:
+                f.write(red.dumps())
 
     def generate_command(self, command_name, command_alias):
         default_container: DefaultContainer = DefaultContainer.getInstance()
@@ -93,13 +131,13 @@ class PythonzManager:
 
         source_type = ""
         for handled_type in self.handled_types:
-            if(handled_type in source_class_name.lower()):
+            if (handled_type in source_class_name.lower()):
                 source_type = handled_type
                 break
 
         target_type = ""
         for handled_type in self.handled_types:
-            if(handled_type in target_class_name.lower()):
+            if (handled_type in target_class_name.lower()):
                 target_type = handled_type
                 break
 
@@ -123,7 +161,5 @@ class PythonzManager:
             constructor.value.append("self." + property_name + " = " + property_name)
             constructor.insert_before(property_name + ": " + target_class_name + "\n\n")
 
-
             with open(source_path, 'w') as f:
                 f.write(red.dumps())
-
