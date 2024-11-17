@@ -21,17 +21,23 @@ class PythonzManager:
 
         default_container: DefaultContainer = DefaultContainer.getInstance()
 
+        entity_name = ""
+
         for handled_type in self.handled_types:
             uc_handled_type = handled_type.capitalize()
             if class_type == handled_type:
                 class_name = class_name.replace(uc_handled_type, '').replace(handled_type, '').strip()
+
+                entity_name = class_name
+
                 class_name = class_name + uc_handled_type
                 break
 
-        parent_type = ""
-        if(class_type == 'variable'):
-            parent_type = 'str'
+        snake_case_entity_name = inflection.underscore(entity_name)
 
+        template_name = "default_class.jinja"
+        if(class_type == 'variable'):
+            template_name = "variable_class.jinja"
 
         package_name = default_container.get_config('name')
         start_dir = os.getcwd()
@@ -47,8 +53,13 @@ class PythonzManager:
             with open(init_path, 'w') as f:
                 f.write('')
 
-        template = self.environment.get_template(f"default_class.jinja")
-        content = template.render(class_name=class_name, parent_type=parent_type)
+        template = self.environment.get_template(template_name)
+        content = template.render(
+            class_name=class_name,
+            parent_type=None,
+            entity_name=entity_name,
+            snake_case_entity_name=snake_case_entity_name
+        )
 
         with open(path, 'w') as f:
             f.write(content)
