@@ -10,8 +10,7 @@ from pythonz.manager.PythonzManager import PythonzManager
 @click.command(
     name='client:create',
 )
-@click.option('--entity_name', prompt='Enter the name of the entity (optional)', default='',
-              help='The name of the entity associated with the client')
+@click.option('--entity_name', default='', help='The name of the entity associated with the client')
 def client_create_command(entity_name: str):
     default_container: DefaultContainer = DefaultContainer.getInstance()
     pythonz_manager: PythonzManager = default_container.get(PythonzManager)
