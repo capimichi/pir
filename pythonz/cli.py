@@ -14,6 +14,7 @@ from pythonz.command.model_create_command import model_create_command
 from pythonz.command.variable_create_command import variable_create_command
 from pythonz.command.command_create_command import command_create_command
 from pythonz.command.di_add_command import di_add_command
+from pythonz.command.container_init_command import container_init_command
 
 @click.group()
 def cli():
@@ -33,6 +34,7 @@ cli.add_command(model_create_command)
 cli.add_command(variable_create_command)
 cli.add_command(command_create_command)
 cli.add_command(di_add_command)
+cli.add_command(container_init_command)
 
 if __name__ == '__main__':
     cli()
