@@ -13,3 +13,5 @@ def container_init_command():
     default_container: DefaultContainer = DefaultContainer.getInstance()
     pythonz_manager: PythonzManager = default_container.get(PythonzManager)
     pythonz_manager.init_container()
+
+    click.echo('Initialized container successfully')
