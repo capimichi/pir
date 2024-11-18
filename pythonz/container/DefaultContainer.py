@@ -74,7 +74,8 @@ class DefaultContainer:
         self.injector.binder.bind(Environment, env)
 
     def _init_vyper(self):
-        v.add_config_path(self.root_dir)
+        config_file_dir = os.path.dirname(self.config_file_path)
+        v.add_config_path(config_file_dir)
         v.set_config_name("pythonz")
         v.set_config_type("json")
         if (os.path.exists(self.config_file_path)):
