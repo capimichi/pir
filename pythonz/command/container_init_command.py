@@ -3,6 +3,7 @@ import os
 import click
 
 from pythonz.container.DefaultContainer import DefaultContainer
+from pythonz.manager.PythonzManager import PythonzManager
 
 
 @click.command(
@@ -10,6 +11,5 @@ from pythonz.container.DefaultContainer import DefaultContainer
 )
 def container_init_command():
     default_container: DefaultContainer = DefaultContainer.getInstance()
-
-    package_name = default_container.get_config('name')
-    start_dir = os.getcwd()
+    pythonz_manager: PythonzManager = default_container.get(PythonzManager)
+    pythonz_manager.init_container()
