@@ -70,6 +70,18 @@ class PirManager:
             f.write(content)
 
         if (len(env_name) > 0):
+
+            env_example_path = f"{start_dir}/.env.example"
+            if not os.path.exists(env_example_path):
+                with open(env_example_path, 'w') as f:
+                    f.write('')
+
+            with open(env_example_path, 'r') as f:
+                env_example_content = f.read()
+            if not env_name in env_example_content:
+                with open(env_example_path, 'a') as f:
+                    f.write(f"{env_name}=\n")
+
             default_container_path = f"{start_dir}/{package_name}/container/DefaultContainer.py"
             with open(default_container_path, 'r') as f:
                 default_container_content = f.read()
