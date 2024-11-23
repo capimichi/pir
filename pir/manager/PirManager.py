@@ -192,6 +192,11 @@ class PirManager:
         if not os.path.exists(dirname):
             os.makedirs(dirname)
 
+        package_init_path = f"{start_dir}/{package_name}/__init__.py"
+        if not os.path.exists(package_init_path):
+            with open(package_init_path, 'w') as f:
+                f.write('')
+
         init_path = f"{dirname}/__init__.py"
         if not os.path.exists(init_path):
             with open(init_path, 'w') as f:
