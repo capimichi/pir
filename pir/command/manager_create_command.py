@@ -10,10 +10,13 @@ from pir.manager.PirManager import PirManager
 @click.command(
     name='manager:create'
 )
-def manager_create_command():
+@click.option('--name', default='', help='The name of the manager', prompt="Enter the name of the manager. es. PostManager")
+def manager_create_command(name: str):
     default_container: DefaultContainer = DefaultContainer.getInstance()
     pir_manager: PirManager = default_container.get(PirManager)
 
-    manager_name = click.prompt('Enter the name of the manager es. PostManager')
-    pir_manager.generate_class(manager_name, 'manager')
+    pir_manager.generate_class(
+        name,
+        'manager'
+    )
     click.echo('Created manager successfully')
