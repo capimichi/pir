@@ -29,6 +29,10 @@ class PirManager:
                 class_name = class_name + uc_handled_type
                 break
 
+        if(class_name.endswith('Model')):
+            class_name = class_name.replace('Model', '')
+
+
         template_name = "default_class.jinja"
         if (class_type == 'variable'):
             template_name = "variable_class.jinja"
