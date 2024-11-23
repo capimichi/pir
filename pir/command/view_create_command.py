@@ -10,10 +10,13 @@ from pir.manager.PirManager import PirManager
 @click.command(
     name='view:create'
 )
-def view_create_command():
+@click.option('--name', default='', help='The name of the view', prompt="Enter the name of the view. es. PostView")
+def view_create_command(name: str):
     default_container: DefaultContainer = DefaultContainer.getInstance()
     pir_manager: PirManager = default_container.get(PirManager)
 
-    view_name = click.prompt('Enter the name of the view es. PostView')
-    pir_manager.generate_class(view_name, 'view')
+    pir_manager.generate_class(
+        name,
+        'view'
+    )
     click.echo('Created view successfully')
