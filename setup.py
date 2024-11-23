@@ -4,18 +4,18 @@ with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
 setup(
-    name="pythonz",
+    name="pir",
     version="1.0.0",
     packages=find_packages(),
     include_package_data=True,  # Include i file extra definiti in MANIFEST.in
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "pythonz=pythonz.cli:cli",
+            "pir=pir.cli:cli",
         ],
     },
-    url="https://github.com/capimichi/pythonz",
+    url="https://github.com/capimichi/pir",
     author="Michele Capicchioni",
     author_email="capimichi@gmail.com",
-    description="Pythonz is a simple CLI tool to generate Python classes",
+    description="Pir is a simple CLI tool to generate Python classes",
 )
