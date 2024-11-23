@@ -139,11 +139,21 @@ class PirManager:
                 source_type = handled_type
                 break
 
+        if(source_type == ""):
+            source_type = "model"
+            if not os.path.exists(f"{start_dir}/{package_name}/{source_type}/{source_class_name}.py"):
+                raise Exception(f"Source class {source_class_name} not found")
+
         target_type = ""
         for handled_type in self.handled_types:
             if(target_class_name.lower().endswith(handled_type)):
                 target_type = handled_type
                 break
+
+        if(target_type == ""):
+            target_type = "model"
+            if not os.path.exists(f"{start_dir}/{package_name}/{target_type}/{target_class_name}.py"):
+                raise Exception(f"Target class {target_class_name} not found")
 
         source_path = f"{start_dir}/{package_name}/{source_type}/{source_class_name}.py"
         with open(source_path, 'r') as f:
