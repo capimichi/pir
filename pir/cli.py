@@ -15,6 +15,7 @@ from pir.command.variable_create_command import variable_create_command
 from pir.command.command_create_command import command_create_command
 from pir.command.di_add_command import di_add_command
 from pir.command.container_init_command import container_init_command
+from pir.command.cli_init_command import cli_init_command
 
 @click.group()
 def cli():
@@ -35,6 +36,7 @@ cli.add_command(variable_create_command)
 cli.add_command(command_create_command)
 cli.add_command(di_add_command)
 cli.add_command(container_init_command)
+cli.add_command(cli_init_command)
 
 if __name__ == '__main__':
     cli()
