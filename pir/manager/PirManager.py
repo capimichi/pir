@@ -241,3 +241,25 @@ class PirManager:
 
         with open(path, 'w') as f:
             f.write(content)
+
+    def init_app(self):
+        default_container: DefaultContainer = DefaultContainer.getInstance()
+        package_name = default_container.get_config('name')
+        start_dir = os.getcwd()
+
+        path = f"{start_dir}/{package_name}/app.py"
+
+        dirname = os.path.dirname(path)
+        if not os.path.exists(dirname):
+            os.makedirs(dirname)
+
+        init_path = f"{dirname}/__init__.py"
+        if not os.path.exists(init_path):
+            with open(init_path, 'w') as f:
+                f.write('')
+
+        template = self.environment.get_template(f"default_app.jinja")
+        content = template.render()
+
+        with open(path, 'w') as f:
+            f.write(content)
