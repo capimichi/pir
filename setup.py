@@ -5,7 +5,7 @@ with open('requirements.txt') as f:
 
 setup(
     name="pir",
-    version="1.0.1",
+    version="1.0.2",
     packages=find_packages(),
     include_package_data=True,  # Include i file extra definiti in MANIFEST.in
     install_requires=requirements,

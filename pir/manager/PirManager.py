@@ -18,7 +18,7 @@ class PirManager:
     def __init__(self, environment: Environment):
         self.environment = environment
 
-    def generate_class(self, class_name: str, class_type: str, entity_name: str = "", env_name: str = ""):
+    def generate_class(self, class_name: str, class_type: str, entity_name: str = "", env_name: str = "", template_name: str = ""):
 
         default_container: DefaultContainer = DefaultContainer.getInstance()
 
@@ -33,9 +33,10 @@ class PirManager:
             class_name = class_name.replace('Model', '')
 
 
-        template_name = "default_class.jinja"
-        if (class_type == 'variable'):
-            template_name = "variable_class.jinja"
+        if not template_name:
+            template_name = "default_class.jinja"
+            if (class_type == 'variable'):
+                template_name = "variable_class.jinja"
 
         package_name = default_container.get_config('name')
         start_dir = os.getcwd()

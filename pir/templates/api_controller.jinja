@@ -1,0 +1,43 @@
+from injector import inject
+from fastapi import APIRouter, HTTPException, status
+
+
+class {{ class_name }}:
+
+    @inject
+    def __init__(self):
+        self.router = APIRouter(prefix="/{{ snake_case_entity_name }}s", tags=["{{ entity_name }}s"])
+        self._register_routes()
+    
+    def _register_routes(self):
+        """Registra le rotte per il controller"""
+        self.router.add_api_route("", self.get_{{ snake_case_entity_name }}s, methods=["GET"])
+        self.router.add_api_route("/{{ '{' }}{{ snake_case_entity_name }}_id}", self.get_{{ snake_case_entity_name }}, methods=["GET"])
+        self.router.add_api_route("", self.create_{{ snake_case_entity_name }}, methods=["POST"])
+        self.router.add_api_route("/{{ '{' }}{{ snake_case_entity_name }}_id}", self.update_{{ snake_case_entity_name }}, methods=["PUT"])
+        self.router.add_api_route("/{{ '{' }}{{ snake_case_entity_name }}_id}", self.delete_{{ snake_case_entity_name }}, methods=["DELETE"])
+    
+    async def get_{{ snake_case_entity_name }}s(self):
+        """Ottiene tutti i {{ snake_case_entity_name }}s"""
+        # Implementazione provvisoria
+        return {"{{ snake_case_entity_name }}s": []}
+    
+    async def get_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}_id: str):
+        """Ottiene un {{ snake_case_entity_name }} specifico per ID"""
+        # Implementazione provvisoria
+        return {"{{ snake_case_entity_name }}_id": {{ snake_case_entity_name }}_id, "name": "{{ entity_name }} di esempio"}
+    
+    async def create_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}_data: dict):
+        """Crea un nuovo {{ snake_case_entity_name }}"""
+        # Implementazione provvisoria
+        return {"message": "{{ entity_name }} creato con successo", "{{ snake_case_entity_name }}": {{ snake_case_entity_name }}_data}
+    
+    async def update_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}_id: str, {{ snake_case_entity_name }}_data: dict):
+        """Aggiorna un {{ snake_case_entity_name }} esistente"""
+        # Implementazione provvisoria
+        return {"message": "{{ entity_name }} aggiornato con successo", "{{ snake_case_entity_name }}_id": {{ snake_case_entity_name }}_id}
+    
+    async def delete_{{ snake_case_entity_name }}(self, {{ snake_case_entity_name }}_id: str):
+        """Elimina un {{ snake_case_entity_name }}"""
+        # Implementazione provvisoria
+        return {"message": "{{ entity_name }} eliminato con successo", "{{ snake_case_entity_name }}_id": {{ snake_case_entity_name }}_id}
